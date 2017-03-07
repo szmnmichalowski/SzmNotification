@@ -131,5 +131,113 @@ class NotificationTest extends TestCase
 
         $this->assertEquals([$message, $message2], $plugin->get($type));
     }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::addInfo
+     * @covers SzmNotification\Controller\Plugin\Notification::getInfo
+     */
+    public function testAddAndGetInfoNotifications()
+    {
+        $message = 'foo bar';
+        $this->notification->addInfo($message);
+
+        $plugin = new Notification();
+
+        $this->assertEquals([$message], $plugin->getInfo());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::hasInfo
+     */
+    public function testHasInfoNotification()
+    {
+        $message = 'foo bar';
+        $this->notification->addInfo($message);
+
+        $plugin = new Notification();
+
+        $this->assertTrue($plugin->hasInfo());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::addSuccess
+     * @covers SzmNotification\Controller\Plugin\Notification::getSuccess
+     */
+    public function testAddAndGetSuccessNotifications()
+    {
+        $message = 'foo bar';
+        $this->notification->addSuccess($message);
+
+        $plugin = new Notification();
+
+        $this->assertEquals([$message], $plugin->getSuccess());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::hasSuccess
+     */
+    public function testHasSuccessNotification()
+    {
+        $message = 'foo bar';
+        $this->notification->addSuccess($message);
+
+        $plugin = new Notification();
+
+        $this->assertTrue($plugin->hasSuccess());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::addWarning
+     * @covers SzmNotification\Controller\Plugin\Notification::getWarning
+     */
+    public function testAddAndGetWarningNotifications()
+    {
+        $message = 'foo bar';
+        $this->notification->addWarning($message);
+
+        $plugin = new Notification();
+
+        $this->assertEquals([$message], $plugin->getWarning());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::hasWarning
+     */
+    public function testHasWarningNotification()
+    {
+        $message = 'foo bar';
+        $this->notification->addWarning($message);
+
+        $plugin = new Notification();
+
+        $this->assertTrue($plugin->hasWarning());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::addError
+     * @covers SzmNotification\Controller\Plugin\Notification::getError
+     */
+    public function testAddAndGetErrorNotifications()
+    {
+        $message = 'foo bar';
+        $this->notification->addError($message);
+
+        $plugin = new Notification();
+
+        $this->assertEquals([$message], $plugin->getError());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::hasError
+     */
+    public function testHasErrorNotification()
+    {
+        $message = 'foo bar';
+        $this->notification->addError($message);
+
+        $plugin = new Notification();
+
+        $this->assertTrue($plugin->hasError());
+    }
 }
 

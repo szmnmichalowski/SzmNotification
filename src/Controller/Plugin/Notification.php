@@ -113,6 +113,42 @@ class Notification extends AbstractPlugin
     }
 
     /**
+     * @param $message
+     * @return $this
+     */
+    public function addInfo($message)
+    {
+        return $this->add(self::NAMESPACE_INFO, $message);
+    }
+
+    /**
+     * @param $message
+     * @return $this
+     */
+    public function addSuccess($message)
+    {
+        return $this->add(self::NAMESPACE_SUCCESS, $message);
+    }
+
+    /**
+     * @param $message
+     * @return $this
+     */
+    public function addWarning($message)
+    {
+        return $this->add(self::NAMESPACE_WARNING, $message);
+    }
+
+    /**
+     * @param $message
+     * @return $this
+     */
+    public function addError($message)
+    {
+        return $this->add(self::NAMESPACE_ERROR, $message);
+    }
+
+    /**
      * @param $type
      * @param $message
      * @return $this
@@ -140,6 +176,48 @@ class Notification extends AbstractPlugin
     }
 
     /**
+     * @return array
+     */
+    public function getAll()
+    {
+        $this->getNotificationsFromContainer();
+
+        return $this->notifications;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInfo()
+    {
+        return $this->get(self::NAMESPACE_INFO);
+    }
+
+    /**
+     * @return array
+     */
+    public function getSuccess()
+    {
+        return $this->get(self::NAMESPACE_SUCCESS);
+    }
+
+    /**
+     * @return array
+     */
+    public function getWarning()
+    {
+        return $this->get(self::NAMESPACE_WARNING);
+    }
+
+    /**
+     * @return array
+     */
+    public function getError()
+    {
+        return $this->get(self::NAMESPACE_ERROR);
+    }
+
+    /**
      * @param $namespace
      * @return bool
      */
@@ -148,6 +226,38 @@ class Notification extends AbstractPlugin
         $this->getNotificationsFromContainer();
 
         return isset($this->notifications[$namespace]);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasInfo()
+    {
+        return $this->has(self::NAMESPACE_INFO);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSuccess()
+    {
+        return $this->has(self::NAMESPACE_SUCCESS);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasWarning()
+    {
+        return $this->has(self::NAMESPACE_WARNING);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasError()
+    {
+        return $this->has(self::NAMESPACE_ERROR);
     }
 
     /**
