@@ -239,5 +239,97 @@ class NotificationTest extends TestCase
 
         $this->assertTrue($plugin->hasError());
     }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::__call
+     */
+    public function testCustomNotificationAdderAndGetter()
+    {
+        $message = 'foo bar';
+        $adder = 'addCustom';
+        $getter = 'getCurrentCustom';
+
+        $this->notification->$adder($message);
+
+        $this->assertEquals([$message], $this->notification->$getter());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::__call
+     */
+    public function testInvalidCustomNotificationSetter()
+    {
+        $message = 'foo bar';
+        $adder = 'invalidAdder';
+
+        $this->assertEquals(null, $this->notification->$adder($message));
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::__call
+     */
+    public function testInvalidCustomNotificationGetter()
+    {
+        $message = 'foo bar';
+        $adder = 'addCustom';
+        $getter = 'invalidGetter';
+
+        $this->assertEquals($this->notification, $this->notification->$adder($message));
+        $this->assertEquals(null, $this->notification->$getter());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::__call
+     */
+    public function testCustomNotificationFromPreviousRequest()
+    {
+        $message = 'foo bar';
+        $adder = 'addCustom';
+        $getter = 'getCustom';
+        $this->notification->$adder($message);
+
+        $plugin = new Notification();
+        $this->assertEquals([$message], $plugin->$getter());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::__call
+     */
+    public function testCustomAdderWithoutText()
+    {
+        $adder = 'addCustom';
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->notification->$adder();
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::__call
+     */
+    public function testCustomHasMethod()
+    {
+        $message = 'foo bar';
+        $adder = 'addCustom';
+        $has = 'hasCustom';
+
+        $this->notification->$adder($message);
+        $plugin = new Notification();
+
+        $this->assertTrue($plugin->$has());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::__call
+     */
+    public function testCurrentCustomHasMethod()
+    {
+        $message = 'foo bar';
+        $adder = 'addCustom';
+        $has = 'hasCurrentCustom';
+
+        $this->notification->$adder($message);
+
+        $this->assertTrue($this->notification->$has());
+    }
 }
 

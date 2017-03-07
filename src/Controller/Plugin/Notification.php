@@ -50,6 +50,17 @@ class Notification extends AbstractPlugin
     protected $isAdded = false;
 
     /**
+     * @var array
+     */
+    protected $customMethods = [
+        'add',
+        'get',
+        'getcurrent',
+        'has',
+        'hascurrent'
+    ];
+
+    /**
      * @param Manager $manager
      * @return $this
      */
@@ -258,6 +269,43 @@ class Notification extends AbstractPlugin
     public function hasError()
     {
         return $this->has(self::NAMESPACE_ERROR);
+    }
+
+    /**
+     * @param $name
+     * @param $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        // we take first 3 chars from called method
+        $length = 3;
+        $name = strtolower($name);
+        if (strpos($name, 'current')) {
+            $length += strlen('current');
+        }
+
+        $method = substr($name, 0, $length);
+        if (!in_array($method, $this->customMethods)) {
+            return false;
+        }
+
+        $namespace = substr($name, $length);
+        if ($method !== 'add') {
+            return $this->$method($namespace);
+        }
+
+        // If user called add method then we have to check if he provided notification text
+        if (!isset($arguments[0]) || !is_string($arguments[0])) {
+            throw new \InvalidArgumentException(sprintf(
+                '%s method must contains notification text, %s given.',
+                $name,
+                isset($arguments[0]) ? gettype($arguments[0]) : null
+            ));
+        }
+
+        $this->$method($namespace, $arguments[0]);
+        return $this;
     }
 
     /**
