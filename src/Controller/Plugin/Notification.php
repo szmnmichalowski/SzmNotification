@@ -5,6 +5,7 @@ namespace SzmNotification\Controller\Plugin;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Session\ManagerInterface as Manager;
 use Zend\Session\Container;
+use Zend\Stdlib\SplQueue;
 
 class Notification extends AbstractPlugin
 {
@@ -44,6 +45,11 @@ class Notification extends AbstractPlugin
     protected $notifications = [];
 
     /**
+     * @var bool
+     */
+    protected $isAdded = false;
+
+    /**
      * @param Manager $manager
      * @return $this
      */
@@ -79,6 +85,69 @@ class Notification extends AbstractPlugin
         $this->container = new Container('notifications', $manager);
 
         return $this->container;
+    }
+
+    /**
+     * @param $type
+     * @param $message
+     * @param int $hops
+     * @return $this
+     */
+    public function add($type, $message, $hops = 1)
+    {
+        $container = $this->getContainer();
+
+        if (!$this->isAdded) {
+            $this->getNotificationsFromContainer();
+            $container->setExpirationHops($hops);
+        }
+
+        if (!isset($container->{$type}) || !$container->{$type} instanceof SplQueue) {
+            $container->{$type} = new SplQueue();
+        }
+
+        $container->{$type}->push($message);
+        $this->isAdded = true;
+
+        return $this;
+    }
+
+    /**
+     * @param $type
+     * @param $message
+     * @return $this
+     */
+    public function __invoke($type = null, $message = null)
+    {
+        if (!$type || !$message) {
+            return $this;
+        }
+
+        return $this->add($type, $message);
+    }
+
+    /**
+     * @param $namespace
+     * @return array
+     */
+    public function get($namespace)
+    {
+        if ($this->has($namespace)) {
+            return $this->notifications[$namespace]->toArray();
+        }
+
+        return [];
+    }
+
+    /**
+     * @param $namespace
+     * @return bool
+     */
+    public function has($namespace)
+    {
+        $this->getNotificationsFromContainer();
+
+        return isset($this->notifications[$namespace]);
     }
 
     /**
