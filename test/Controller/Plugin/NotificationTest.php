@@ -41,5 +41,24 @@ class NotificationTest extends TestCase
     {
         $this->assertInstanceOf(Container::class, $this->notification->getContainer());
     }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Noty::getNotificationsFromContainer
+     * @covers SzmNotification\Controller\Plugin\Noty::clearNotificationsFromContainer
+     */
+    public function testClearContainer()
+    {
+        $type = 'info';
+        $text = 'foo bar';
+
+        $this->notification->add($type, $text);
+
+        $plugin = new Notification();
+        $plugin->get($type);
+        $container = $plugin->getContainer();
+        $sessionNotifications = $container->{$type};
+
+        $this->assertTrue(empty($sessionNotifications));
+    }
 }
 
