@@ -463,4 +463,58 @@ class Notification extends AbstractPlugin
             unset($container->{$namespace});
         }
     }
+
+    /**
+     * Clear notifications from container if namespace is provided or clear all notifications
+     * added during this request if namespace is not provided.
+     *
+     * @param null $namespace
+     * @return bool
+     */
+    public function clearCurrent($namespace = null)
+    {
+        $container = $this->getContainer();
+
+        if ($namespace) {
+            if (!$container->offsetExists($namespace)) {
+                return false;
+            }
+
+            unset($container->{$namespace});
+            return true;
+        }
+
+        foreach ($container as $namespace => $notifications) {
+            $container->offsetUnset($namespace);
+        }
+
+        return true;
+    }
+
+    /**
+     * Clear notifications from previous request by provided namespace or clear all
+     * notifications if namespace is not provided
+     *
+     * @param null $namespace
+     * @return bool
+     */
+    public function clear($namespace = null)
+    {
+        $this->getNotificationsFromContainer();
+
+        if ($namespace) {
+            if (isset($this->notifications[$namespace])) {
+                unset($this->notifications[$namespace]);
+                return true;
+            }
+
+            return false;
+        }
+
+        foreach ($this->notifications as $nm => $type) {
+            unset($this->notifications[$nm]);
+        }
+
+        return true;
+    }
 }

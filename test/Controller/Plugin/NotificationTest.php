@@ -458,5 +458,83 @@ class NotificationTest extends TestCase
 
         $this->assertEquals([$prevMessage, $currentMessage], array_merge($prevResult, $currentResult));
     }
-}
 
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::clearCurrent
+     */
+    public function testClearCurrentNotifications()
+    {
+        $type = 'info';
+        $prevMessage = 'prev request';
+        $currentMessage = 'current request';
+
+        $this->notification->add($type, $prevMessage);
+
+        $plugin = new Notification();
+        $plugin->add($type, $currentMessage);
+
+        $plugin->clearCurrent();
+
+        $this->assertTrue($plugin->has($type));
+        $this->assertFalse($plugin->hasCurrent($type));
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::clearCurrent
+     */
+    public function testClearSingleCurrentNotifications()
+    {
+        $type = 'info';
+        $type2 = 'success';
+        $message = 'foo bar';
+        $message2 = 'baz bar';
+
+        $this->notification->add($type, $message);
+        $this->notification->add($type2, $message2);
+
+        $this->notification->clearCurrent($type);
+
+        $this->assertFalse($this->notification->hasCurrentInfo());
+        $this->assertEquals([$message2], $this->notification->getCurrentSuccess());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::clear
+     */
+    public function testClearNotifications()
+    {
+        $type = 'info';
+        $prevMessage = 'prev request';
+        $currentMessage = 'current request';
+
+        $this->notification->add($type, $prevMessage);
+
+        $plugin = new Notification();
+        $plugin->add($type, $currentMessage);
+
+        $plugin->clear();
+
+        $this->assertFalse($plugin->has($type));
+        $this->assertEquals([$currentMessage], $plugin->getCurrent($type));
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::clear
+     */
+    public function testClearSingleNotification()
+    {
+        $type = 'info';
+        $type2 = 'success';
+        $message = 'foo bar';
+        $message2 = 'bar baz';
+
+        $this->notification->add($type, $message);
+        $this->notification->add($type2, $message2);
+
+        $plugin = new Notification();
+        $plugin->clear($type);
+
+        $this->assertFalse($plugin->hasInfo());
+        $this->assertEquals([$message2], $plugin->getSuccess());
+    }
+}
