@@ -20,11 +20,6 @@ class NotificationTest extends TestCase
         $this->notification = new Notification();
     }
 
-    public function testPluginExists()
-    {
-        $this->assertTrue(is_object($this->notification));
-    }
-
     /**
      * @covers SzmNotification\Controller\Plugin\Notification::setSessionManager
      * @covers SzmNotification\Controller\Plugin\Notification::getSessionManager
