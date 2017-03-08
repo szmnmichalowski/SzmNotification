@@ -272,6 +272,129 @@ class Notification extends AbstractPlugin
     }
 
     /**
+     * @param $namespace
+     * @return array|mixed
+     */
+    public function getCurrent($namespace)
+    {
+        if ($this->hasCurrent($namespace)) {
+            $container = $this->getContainer();
+
+            return $container->{$namespace}->toArray();
+        }
+
+        return [];
+    }
+
+    /**
+     * Get all current notifications
+     *
+     * @return array
+     */
+    public function getAllCurrent()
+    {
+        $notifications = [];
+        $container = $this->getContainer();
+
+        foreach ($container as $namespace => $notification) {
+            $notifications[$namespace] = $this->getCurrent($namespace);
+        }
+
+        return $notifications;
+    }
+
+    /**
+     * Get info notifications added during this request
+     *
+     * @return array|mixed
+     */
+    public function getCurrentInfo()
+    {
+        return $this->getCurrent(self::NAMESPACE_INFO);
+    }
+
+    /**
+     * Get success notifications added during this request
+     *
+     * @return array|mixed
+     */
+    public function getCurrentSuccess()
+    {
+        return $this->getCurrent(self::NAMESPACE_SUCCESS);
+    }
+
+    /**
+     * Get warning notifications added during this request
+     *
+     * @return array|mixed
+     */
+    public function getCurrentWarning()
+    {
+        return $this->getCurrent(self::NAMESPACE_WARNING);
+    }
+
+    /**
+     * Get error notifications added during this request
+     *
+     * @return array|mixed
+     */
+    public function getCurrentError()
+    {
+        return $this->getCurrent(self::NAMESPACE_ERROR);
+    }
+
+    /**
+     * @param $namespace
+     * @return bool
+     */
+    public function hasCurrent($namespace)
+    {
+        $container = $this->getContainer();
+
+        return isset($container->{$namespace});
+    }
+
+    /**
+     * Check if info notifications have been added during this request
+     *
+     * @return bool
+     */
+    public function hasCurrentInfo()
+    {
+        return $this->hasCurrent(self::NAMESPACE_INFO);
+    }
+
+    /**
+     * Check if success notifications have been added during this request
+     *
+     * @return bool
+     */
+    public function hasCurrentSuccess()
+    {
+        return $this->hasCurrent(self::NAMESPACE_SUCCESS);
+    }
+
+    /**
+     * Check if warning notifications have been added during this request
+     *
+     * @return bool
+     */
+    public function hasCurrentWarning()
+    {
+        return $this->hasCurrent(self::NAMESPACE_WARNING);
+    }
+
+    /**
+     * Check if error notifications have been added during this request
+     *
+     * @return bool
+     */
+    public function hasCurrentError()
+    {
+        return $this->hasCurrent(self::NAMESPACE_ERROR);
+    }
+
+    /**
      * @param $name
      * @param $arguments
      * @return mixed

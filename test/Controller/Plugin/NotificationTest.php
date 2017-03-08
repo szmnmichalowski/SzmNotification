@@ -331,5 +331,132 @@ class NotificationTest extends TestCase
 
         $this->assertTrue($this->notification->$has());
     }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::getCurrentInfo
+     */
+    public function testGetCurrentInfo()
+    {
+        $message = 'foo bar';
+        $this->notification->addInfo($message);
+
+        $this->assertEquals([$message], $this->notification->getCurrentInfo());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::hasCurrentInfo
+     */
+    public function testHasCurrentInfo()
+    {
+        $message = 'foo bar';
+        $this->notification->addInfo($message);
+
+        $this->assertTrue($this->notification->hasCurrentInfo());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::getCurrentSuccess
+     */
+    public function testGetCurrentSuccess()
+    {
+        $message = 'foo bar';
+        $this->notification->addSuccess($message);
+
+        $this->assertEquals([$message], $this->notification->getCurrentSuccess());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::hasCurrentSuccess
+     */
+    public function testHasCurrentSuccess()
+    {
+        $message = 'foo bar';
+        $this->notification->addSuccess($message);
+
+        $this->assertTrue($this->notification->hasCurrentSuccess());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::getCurrentWarning
+     */
+    public function testGetCurrentWarning()
+    {
+        $message = 'foo bar';
+        $this->notification->addWarning($message);
+
+        $this->assertEquals([$message], $this->notification->getCurrentWarning());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::hasCurrentWarning
+     */
+    public function testHasCurrentWarning()
+    {
+        $message = 'foo bar';
+        $this->notification->addWarning($message);
+
+        $this->assertTrue($this->notification->hasCurrentWarning());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::getCurrentError
+     */
+    public function testGetCurrentError()
+    {
+        $message = 'foo bar';
+        $this->notification->addError($message);
+
+        $this->assertEquals([$message], $this->notification->getCurrentError());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::getCurrentError
+     */
+    public function testHasCurrentError()
+    {
+        $message = 'foo bar';
+        $this->notification->addError($message);
+
+        $this->assertTrue($this->notification->hasCurrentError());
+    }
+
+    public function testGetNotificationsFromPreviousRequest()
+    {
+        $type = 'info';
+        $message = 'prev request';
+
+        $this->notification->add($type, $message);
+
+        $plugin = new Notification();
+        $this->assertEquals([$message], $plugin->get($type));
+    }
+
+    public function testGetNotificationsFromCurrentRequest()
+    {
+        $type = 'info';
+        $message = 'prev request';
+
+        $this->notification->add($type, $message);
+
+        $plugin = new Notification();
+        $this->assertEquals([$message], $plugin->getCurrent($type));
+    }
+
+    public function testGetNotificationsFromPrevAndCurrentRequest()
+    {
+        $type = 'info';
+        $prevMessage = 'prev request';
+        $currentMessage = 'current request';
+
+        $this->notification->add($type, $prevMessage);
+
+        $plugin = new Notification();
+        $plugin->add($type, $currentMessage);
+
+        $prevResult = $plugin->get($type);
+        $currentResult = $plugin->getCurrent($type);
+
+        $this->assertEquals([$prevMessage, $currentMessage], array_merge($prevResult, $currentResult));
+    }
 }
 
