@@ -556,4 +556,40 @@ class NotificationTest extends TestCase
         $this->assertFalse($plugin->hasInfo());
         $this->assertEquals([$message2], $plugin->getSuccess());
     }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::getAll
+     */
+    public function testGetAll()
+    {
+        $type = 'info';
+        $type2 = 'success';
+        $message = 'foo bar';
+        $message2 = 'bar baz';
+
+        $this->notification->add($type, $message);
+        $this->notification->add($type2, $message2);
+
+        $plugin = new Notification();
+
+        $this->assertArrayHasKey($type, $plugin->getAll());
+        $this->assertArrayHasKey($type2, $plugin->getAll());
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::getAllCurrent
+     */
+    public function testGetAllCurrent()
+    {
+        $type = 'info';
+        $type2 = 'success';
+        $message = 'foo bar';
+        $message2 = 'bar baz';
+
+        $this->notification->add($type, $message);
+        $this->notification->add($type2, $message2);
+
+        $this->assertArrayHasKey($type, $this->notification->getAllCurrent());
+        $this->assertArrayHasKey($type2, $this->notification->getAllCurrent());
+    }
 }
