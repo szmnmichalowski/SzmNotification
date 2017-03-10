@@ -113,6 +113,14 @@ class NotificationTest extends TestCase
     }
 
     /**
+     * @covers SzmNotification\Controller\Plugin\Notification::__invoke
+     */
+    public function testInvokeWithNoParams()
+    {
+        $this->assertInstanceOf(Notification::class, $this->notification->__invoke());
+    }
+
+    /**
      * @covers SzmNotification\Controller\Plugin\Notification::add
      */
     public function testAddNotification()
