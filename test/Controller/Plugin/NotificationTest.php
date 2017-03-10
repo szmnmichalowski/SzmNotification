@@ -429,7 +429,7 @@ class NotificationTest extends TestCase
     }
 
     /**
-     * @covers SzmNotification\Controller\Plugin\Notification::getCurrentError
+     * @covers SzmNotification\Controller\Plugin\Notification::hasCurrentError
      */
     public function testHasCurrentError()
     {
