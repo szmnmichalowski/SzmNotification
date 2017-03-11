@@ -101,6 +101,14 @@ class NotificationTest extends TestCase
     }
 
     /**
+     * @covers SzmNotification\Controller\Plugin\Notification::get
+     */
+    public function testGetNotificationsWithInvalidNamespace()
+    {
+        $this->assertEquals([], $this->notification->get('invalid'));
+    }
+
+    /**
      * @covers SzmNotification\Controller\Plugin\Notification::__invoke
      */
     public function testInvokeMethod()
@@ -476,6 +484,14 @@ class NotificationTest extends TestCase
         $currentResult = $plugin->getCurrent($type);
 
         $this->assertEquals([$prevMessage, $currentMessage], array_merge($prevResult, $currentResult));
+    }
+
+    /**
+     * @covers SzmNotification\Controller\Plugin\Notification::getCurrent
+     */
+    public function testGetCurrentNotificationsWithInvalidNamespace()
+    {
+        $this->assertEquals([], $this->notification->getCurrent('invalid'));
     }
 
     /**
