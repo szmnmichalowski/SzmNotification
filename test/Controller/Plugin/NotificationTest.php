@@ -518,6 +518,22 @@ class NotificationTest extends TestCase
     }
 
     /**
+     * @covers SzmNotification\Controller\Plugin\Notification::clearCurrent
+     */
+    public function testClearSingleInvalidCurrentNotifications()
+    {
+        $type = 'info';
+        $type2 = 'success';
+        $message = 'foo bar';
+        $message2 = 'baz bar';
+
+        $this->notification->add($type, $message);
+        $this->notification->add($type2, $message2);
+
+        $this->assertFalse($this->notification->clearCurrent('error'));
+    }
+
+    /**
      * @covers SzmNotification\Controller\Plugin\Notification::clear
      */
     public function testClearNotifications()
