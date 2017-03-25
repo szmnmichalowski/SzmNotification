@@ -1,6 +1,8 @@
 ## SzmNotification
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+[![Build Status](https://travis-ci.org/szmnmichalowski/SzmNotification.svg?branch=master)](https://travis-ci.org/szmnmichalowski/SzmNotification)
+[![Code Coverage](https://scrutinizer-ci.com/g/szmnmichalowski/SzmNotification/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/szmnmichalowski/SzmNotification/?branch=develop)
 
 SzmNotification is a [Zend Framework 2/3](http://framework.zend.com/) controller plugin which stores notification in session container (same as FlashMessanger). 
 It is designed to work with one of the following notifiction helpers:
