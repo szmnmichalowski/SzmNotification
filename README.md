@@ -10,7 +10,8 @@ It is designed to work with one of the following notifiction helpers:
 
 ## Installation
 
-You can install this module via composer
+You can install this module via composer  
+
 **1.** Add this project into your composer.json
 ```
 "require": {
